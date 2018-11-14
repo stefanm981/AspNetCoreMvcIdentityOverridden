@@ -56,7 +56,7 @@ namespace Chushka
             services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = $"/Account/Login";
-                options.LogoutPath = $"/Identity/Account/Logout";
+                options.LogoutPath = $"/Account/Logout";
                 options.AccessDeniedPath = $"/Account/AccessDenied";
             });
 

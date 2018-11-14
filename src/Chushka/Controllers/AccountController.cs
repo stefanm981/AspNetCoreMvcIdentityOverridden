@@ -1,6 +1,7 @@
 ﻿using System.Linq;
 using Chushka.Models;
 using Chushka.Web.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using SignInResult = Microsoft.AspNetCore.Identity.SignInResult;
@@ -18,14 +19,31 @@ namespace Chushka.Web.Controllers
             this.userManager = userManager;
         }
 
+        [Authorize]
+        public IActionResult Logout()
+        {
+            this.signIn.SignOutAsync().Wait();
+            return this.RedirectToAction("Index", "Home");
+        }
+
         public IActionResult Login()
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
         [HttpPost]
         public IActionResult Login(LogInInputModel model)
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
             var user = this.userManager.Users.FirstOrDefault(u => u.UserName == model.Username);
             if (user == null) //user does not exists
             {
@@ -46,12 +64,22 @@ namespace Chushka.Web.Controllers
 
         public IActionResult Register()
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
             return View();
         }
 
         [HttpPost]
         public IActionResult Register(RegisterInputModel model)
         {
+            if (this.User.Identity.IsAuthenticated)
+            {
+                return this.RedirectToAction("Index", "Home");
+            }
+
             if (ModelState.IsValid)
             {
                 var user = new ChushkaUser
