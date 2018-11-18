@@ -11,15 +11,15 @@ namespace Chushka.Web.Utilities
         public static void Seed(IServiceProvider provider)
         {
             var roleManager = provider.GetService<RoleManager<IdentityRole>>();
-            var adminRoleExists = roleManager.RoleExistsAsync("Administrator").Result;
+            var adminRoleExists = roleManager.RoleExistsAsync("Administrator").GetAwaiter().GetResult();
             if (!adminRoleExists)
             {
-                roleManager.CreateAsync(new IdentityRole("Administrator"));
+                roleManager.CreateAsync(new IdentityRole("Administrator")).GetAwaiter().GetResult();
             }
-            var userRoleExists = roleManager.RoleExistsAsync("User").Result;
+            var userRoleExists = roleManager.RoleExistsAsync("User").GetAwaiter().GetResult();
             if (!userRoleExists)
             {
-                roleManager.CreateAsync(new IdentityRole("User"));
+                roleManager.CreateAsync(new IdentityRole("User")).GetAwaiter().GetResult();
             }
         }
     }
